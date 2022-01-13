@@ -1,106 +1,56 @@
 from collections import deque
-# class Node:
-#     def __init__(self, val=None, next=None):
-#         self.val = val
-#         self.next = next
-
-#     def get_val(self):
-#         return self.val
-
-#     def get_next(self):
-#         return self.next
-
-#     def set_val(self, new_val):
-#         self.val = new_val
-
-#     def set_next(self, new_next):
-#         self.next = new_next
+"This node class only points in one direction"
 
 
-# class LinkedList:
-#     def __init__(self, head=None):
-#         self.head = head
+class Node:
+    def __init__(self, val=None, next=None):
+        self.val = val
+        self.next = next
 
-#     def get_head(self):
-#         return self.head
+    def get_val(self):
+        return self.val
 
-#     def set_head(self, node):
-#         node.set_next(self.head)
-#         self.head = node
+    def get_next(self):
+        return self.next
 
-#     def __repr__(self):
-#         curr = self.get_head()
-#         lst = []
-#         while curr is not None:
-#             lst.append(str(curr.get_val()))
-#             curr = curr.get_next()
-#         return ' -> '.join(lst)+' -> None'
+    def set_val(self, new_val):
+        self.val = new_val
 
-# class dsNode:
-#     def __init__(self, val=None, next=None, prev=None):
-#         self.val = val
-#         self.next = next
-#         self.prev = prev
+    def set_next(self, new_next):
+        self.next = new_next
 
-#     def get_val(self):
-#         return self.val
 
-#     def get_next(self):
-#         return self.next
+"This Node class points to the previous node and the next one"
 
-#     def get_prev(self):
-#         return self.prev
 
-#     def set_val(self, new_val):
-#         self.val = new_val
+class dsNode:
+    def __init__(self, val=None, next=None, prev=None):
+        self.val = val
+        self.next = next
+        self.prev = prev
 
-#     def set_next(self, new_next):
-#         self.next = new_next
+    def get_val(self):
+        return self.val
 
-#     def set_prev(self, new_prev):
-#         self.prev = new_prev
+    def get_next(self):
+        return self.next
 
-# class dLinkedList:
-#     def __init__(self, head=None, tail=None):
-#         self.head = head
-#         self.tail = tail
+    def get_prev(self):
+        return self.prev
 
-#     def get_head(self):
-#         return self.head
+    def set_val(self, new_val):
+        self.val = new_val
 
-#     def set_head(self, node):
-#         node.set_next(self.head)
-#         self.head = node
+    def set_next(self, new_next):
+        self.next = new_next
 
-#     def get_tail(self):
-#         return self.tail
+    def set_prev(self, new_prev):
+        self.prev = new_prev
 
-#     def set_tail(self, node):
-#         node.set_prev(self.tail)
-#         self.tail.set_next(node)
-#         self.tail = node
 
-#     def __repr__(self):
-#         curr = self.get_head()
-#         lst = []
-#         while curr is not None:
-#             lst.append(str(curr.get_val()))
-#             curr = curr.get_next()
-#         return ' <-> '.join(lst)+' -> None'
+"""This Node class is used for the Binary tree data structure. Similar to the dsNode class except that the children 
+are refered to as left and right as opposed to prev and next."""
 
-# a = dsNode(1)
-# b = dsNode(2)
-# c = dsNode(3)
-# d = dsNode(4)
-# e = dsNode(5)
-# a.set_next(b)
-# b.set_next(c)
-# c.set_next(d)
-# d.set_next(e)
-# llst = dLinkedList(a, e)
-# llst.set_head(dsNode(0))
-# llst.set_tail(dsNode(6))
-# print(llst)
 
 class tNode:
     def __init__(self, val=None, left=None, right=None):
@@ -125,6 +75,79 @@ class tNode:
 
     def set_right(self, new_right):
         self.right = new_right
+
+
+"This LinkedList class uses the first Node class. This class takes in a Node"
+
+
+class LinkedList:
+    def __init__(self, head=None):
+        self.head = head
+
+    def get_head(self):
+        return self.head
+
+    def set_head(self, node):
+        node.set_next(self.head)
+        self.head = node
+
+    def __repr__(self):
+        curr = self.get_head()
+        lst = []
+        while curr is not None:
+            lst.append(str(curr.get_val()))
+            curr = curr.get_next()
+        return ' -> '.join(lst)+' -> None'
+
+
+"""This dLinkedList class uses the dsNode class. Like a linked list just that it has a prev pointer. This class takes in two
+dsNodes"""
+
+
+class dLinkedList:
+    def __init__(self, head=None, tail=None):
+        self.head = head
+        self.tail = tail
+
+    def get_head(self):
+        return self.head
+
+    def set_head(self, node):
+        node.set_next(self.head)
+        self.head = node
+
+    def get_tail(self):
+        return self.tail
+
+    def set_tail(self, node):
+        node.set_prev(self.tail)
+        self.tail.set_next(node)
+        self.tail = node
+
+    def __repr__(self):
+        curr = self.get_head()
+        lst = []
+        while curr is not None:
+            lst.append(str(curr.get_val()))
+            curr = curr.get_next()
+        return ' <-> '.join(lst)+' -> None'
+
+# a = dsNode(1)
+# b = dsNode(2)
+# c = dsNode(3)
+# d = dsNode(4)
+# e = dsNode(5)
+# a.set_next(b)
+# b.set_next(c)
+# c.set_next(d)
+# d.set_next(e)
+# llst = dLinkedList(a, e)
+# llst.set_head(dsNode(0))
+# llst.set_tail(dsNode(6))
+# print(llst)
+
+
+"""This BinaryTree class uses the tNode class. It takes in a tNode to create a tree. If no node is specified it is set to None"""
 
 
 class BinaryTree:
