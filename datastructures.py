@@ -256,6 +256,34 @@ def max_depth2(t, n):
         return max(max_depth2(t.left, n+1), max_depth2(t.right, n+1))
 
 
+# def issymmetric_helper(t, lst):
+#     if t is None:
+#         return []
+#     if t.left is None and t.right is None:
+#         return [(lst, t.root.val)]
+#     if t.left != None:
+#         return issymmetric_helper(t.left, lst+['L'])+[(lst, t.root.val)]+issymmetric_helper(t.right, lst+['R'])
+#     if t.right != None:
+#         return issymmetric_helper(t.left, lst+['L'])+[(lst, t.root.val)]+issymmetric_helper(t.right, lst+['R'])
+
+
+# def issymmetric(t):
+#     lst = issymmetric_helper(t, [])
+#     for i in range(len(lst)):
+#         test = lst[i]
+#         new_lst = ([], test[1])
+#         if len(test[0]) == 0:
+#             continue
+#         for j in range(len(test[0])):
+#             if test[0][j] == "L":
+#                 new_lst[0].append("R")
+#             if test[0][j] == "R":
+#                 new_lst[0].append("L")
+#         if not(new_lst in lst):
+#             return False
+#     return True
+
+
 # def isOpp(xs, ys):
 #     for i in range(len(xs)):
 #         if xs[i] == 0 and ys[i] == 0:
@@ -293,15 +321,30 @@ root2 = tNode("F", tNode("B", tNode("A"), tNode("D", tNode("C"),
               tNode("E"))), tNode("G", None, tNode("I", tNode("H"), None)))
 root4 = tNode(1, tNode(2, tNode(3), tNode(4)), tNode(2, tNode(4), tNode(3)))
 root5 = tNode(1, tNode(2, None, tNode(3)), tNode(2, None, tNode(3)))
+"Instantiated as Binary Trees"
 tree = BinaryTree(root)
 tree2 = BinaryTree(root2)
 tree3 = BinaryTree()
 tree4 = BinaryTree(root4)
 tree5 = BinaryTree(root5)
+"Making sure that the subtrees of the trees from above are also type BinaryTree"
+subtreeleft = tree.left
+subtreeright = tree.right
+subtreeleftleft = subtreeleft.left
+print(type(subtreeleft), type(subtreeright))
+print(type(subtreeleftleft))
 "Testing the traversal methods"
 assert preorder(tree2) == ["F", "B", "A", "D", "C", "E", "G", 'I', 'H']
 assert inorder(tree2) == ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I']
 assert postorder(tree2) == ['A', 'C', 'E', 'D', 'B', 'H', 'I', 'G', 'F']
 assert levelorder(tree2) == ["F", "B", "G", "A", "D", "I", "C", 'E', 'H']
+"Testing max_depth methods"
 assert max_depth(tree2) == 4
 assert max_depth2(tree2, 0) == 4
+"Testing issymmetric"
+# print(tree3 == None)
+# assert issymmetric(tree) == False
+# assert issymmetric(tree2) == False
+# # assert issymmetric(tree3) == True
+# assert issymmetric(tree4) == True
+# assert issymmetric(tree5) == False
