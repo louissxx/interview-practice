@@ -168,38 +168,44 @@ class BinaryTree:
 
 def preorder(t):
     """visit the root first then traverse the left subtree, and finally traverse the right subtree"""
-    if t is None:
+    if t.root is None:
         return []
     if t.left is None and t.right is None:
         return [t.root.val]
+    if t.left != None and t.right != None:
+        return [t.root.val]+preorder(t.left)+preorder(t.right)
     if t.left != None:
-        return [t.root.val]+preorder(t.left)+preorder(t.right)
+        return [t.root.val]+preorder(t.left)
     if t.right != None:
-        return [t.root.val]+preorder(t.left)+preorder(t.right)
+        return [t.root.val]+preorder(t.right)
 
 
 def inorder(t):
     """traverse the left subtree first, then visit the root, finally traverse the right subtree"""
-    if t is None:
+    if t.root is None:
         return []
     if t.left is None and t.right is None:
         return [t.root.val]
+    if t.left != None and t.right != None:
+        return inorder(t.left)+[t.root.val]+inorder(t.right)
     if t.left != None:
-        return inorder(t.left)+[t.root.val]+inorder(t.right)
+        return inorder(t.left)+[t.root.val]
     if t.right != None:
-        return inorder(t.left)+[t.root.val]+inorder(t.right)
+        return [t.root.val]+inorder(t.right)
 
 
 def postorder(t):
     """traverse the the left subtree, then traverse the right subtree, finally visit the root"""
-    if t is None:
+    if t.root is None:
         return []
     if t.left is None and t.right is None:
         return [t.root.val]
+    if t.left != None and t.right != None:
+        return postorder(t.left)+postorder(t.right)+[t.root.val]
     if t.left != None:
-        return postorder(t.left)+postorder(t.right)+[t.root.val]
+        return postorder(t.left)+[t.root.val]
     if t.right != None:
-        return postorder(t.left)+postorder(t.right)+[t.root.val]
+        return postorder(t.right)+[t.root.val]
 
 
 def levelorder(t):
@@ -234,87 +240,65 @@ def levelorder(t):
 
 def max_depth(t):
     "checks for the depth of the tree"
-    if t is None:
+    if t.root is None:
         return 0
     if t.left == None and t.right == None:
         return 1
+    if t.left != None and t.right != None:
+        return 1 + max(max_depth(t.left), max_depth(t.right))
     if t.left != None:
-        return 1 + max(max_depth(t.left), max_depth(t.right))
+        return 1 + max_depth(t.left)
     if t.right != None:
-        return 1 + max(max_depth(t.left), max_depth(t.right))
+        return 1 + max_depth(t.right)
 
 
 def max_depth2(t, n):
     "checks for the depth of the tree"
-    if t is None:
+    if t.root is None:
         return 0
     if t.left == None and t.right == None:
         return n+1
+    if t.left != None and t.right != None:
+        return max(max_depth2(t.left, n+1), max_depth2(t.right, n+1))
     if t.left != None:
-        return max(max_depth2(t.left, n+1), max_depth2(t.right, n+1))
+        return max_depth2(t.left, n+1)
     if t.right != None:
-        return max(max_depth2(t.left, n+1), max_depth2(t.right, n+1))
+        return max_depth2(t.right, n+1)
 
 
-# def issymmetric_helper(t, lst):
-#     if t is None:
-#         return []
-#     if t.left is None and t.right is None:
-#         return [(lst, t.root.val)]
-#     if t.left != None:
-#         return issymmetric_helper(t.left, lst+['L'])+[(lst, t.root.val)]+issymmetric_helper(t.right, lst+['R'])
-#     if t.right != None:
-#         return issymmetric_helper(t.left, lst+['L'])+[(lst, t.root.val)]+issymmetric_helper(t.right, lst+['R'])
+def issymmetric_helper(t, lst):
+    """takes in a BinaryTree and a lst(usually an empty lst). Returns a list of tuples (x,y). Where x
+    is a list of the path to get to node n and y is the value at node n."""
+    if t.root is None:
+        return []
+    if t.left is None and t.right is None:
+        return [(lst, t.root.val)]
+    if t.left != None and t.right != None:
+        return issymmetric_helper(t.left, lst+['L'])+[(lst, t.root.val)]+issymmetric_helper(t.right, lst+['R'])
+    if t.left != None:
+        return issymmetric_helper(t.left, lst+['L'])+[(lst, t.root.val)]
+    if t.right != None:
+        return [(lst, t.root.val)]+issymmetric_helper(t.right, lst+['R'])
 
 
-# def issymmetric(t):
-#     lst = issymmetric_helper(t, [])
-#     for i in range(len(lst)):
-#         test = lst[i]
-#         new_lst = ([], test[1])
-#         if len(test[0]) == 0:
-#             continue
-#         for j in range(len(test[0])):
-#             if test[0][j] == "L":
-#                 new_lst[0].append("R")
-#             if test[0][j] == "R":
-#                 new_lst[0].append("L")
-#         if not(new_lst in lst):
-#             return False
-#     return True
+def issymmetric(t):
+    """takes in a tree and checks if the tree is symmetric, returns true or false"""
+    lst = issymmetric_helper(t, [])
+    for i in range(len(lst)):
+        test = lst[i]
+        new_lst = ([], test[1])
+        if len(test[0]) == 0:
+            continue
+        for j in range(len(test[0])):
+            if test[0][j] == "L":
+                new_lst[0].append("R")
+            if test[0][j] == "R":
+                new_lst[0].append("L")
+        if not(new_lst in lst):
+            return False
+    return True
 
 
-# def isOpp(xs, ys):
-#     for i in range(len(xs)):
-#         if xs[i] == 0 and ys[i] == 0:
-#             return False
-#         if xs[i] == 1 and ys[i] == 1:
-#             return False
-#     return True
-# def issymmetric(t):
-#     if t is None:
-#         return False
-#     if t.left is None and t.right is None:
-#         return True
-#     if t.left is not None:
-#         left = ['L']+issymmetric(t.left)
-#         right = ['R']+issymmetric(t.right)
-#         return (left, right)
-#     if t.right is not None:
-#         left = ['L']+issymmetric(t.left)
-#         right = ['R']+issymmetric(t.right)
-#         return (left, right)
-# print(issymmetric(tree4))
-# print(issymmetric(tree5, []))
-# print(max_depth(tree, 0))
-# print(max_depth(tree, 1))
-# print(max_depth(tree2, 0))
-# print(max_depth(tree2, 1))
-# print(max_depth(tree3, 0))
-# print(max_depth(tree3, 1))
-# print(max_depth2(tree))
-# print(max_depth2(tree2))
-# print(max_depth2(tree3))
 "Here I built 5 trees"
 root = tNode(4, tNode(5), tNode(3))
 root2 = tNode("F", tNode("B", tNode("A"), tNode("D", tNode("C"),
@@ -333,7 +317,15 @@ subtreeright = tree.right
 subtreeleftleft = subtreeleft.left
 print(type(subtreeleft), type(subtreeright))
 print(type(subtreeleftleft))
+print(type(tree3))
+"Instantiated a BinaryTree with no root."
+# print(type(tree3))
+# print(type(tree3.root))
+# print(type(tree3.right))
+# print(type(tree3.left))
+
 "Testing the traversal methods"
+assert preorder(tree3) == []
 assert preorder(tree2) == ["F", "B", "A", "D", "C", "E", "G", 'I', 'H']
 assert inorder(tree2) == ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I']
 assert postorder(tree2) == ['A', 'C', 'E', 'D', 'B', 'H', 'I', 'G', 'F']
@@ -341,10 +333,18 @@ assert levelorder(tree2) == ["F", "B", "G", "A", "D", "I", "C", 'E', 'H']
 "Testing max_depth methods"
 assert max_depth(tree2) == 4
 assert max_depth2(tree2, 0) == 4
+# print(max_depth(tree, 0))
+# print(max_depth(tree, 1))
+# print(max_depth(tree2, 0))
+# print(max_depth(tree2, 1))
+# print(max_depth(tree3, 0))
+# print(max_depth(tree3, 1))
+# print(max_depth2(tree))
+# print(max_depth2(tree2))
+# print(max_depth2(tree3))
 "Testing issymmetric"
-# print(tree3 == None)
-# assert issymmetric(tree) == False
-# assert issymmetric(tree2) == False
-# # assert issymmetric(tree3) == True
-# assert issymmetric(tree4) == True
-# assert issymmetric(tree5) == False
+assert issymmetric(tree) == False
+assert issymmetric(tree2) == False
+assert issymmetric(tree3) == True
+assert issymmetric(tree4) == True
+assert issymmetric(tree5) == False
